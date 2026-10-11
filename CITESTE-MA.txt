@@ -1,0 +1,18 @@
+ZEVS – site + comenzi pe Telegram + panou de administrare
+=========================================================
+Conținut:
+  index.html                  – site-ul
+  admin.html                  – panoul de administrare (adresa: /admin)
+  images/                     – pozele produselor actuale
+  netlify/functions/          – partea de server (comenzi, produse, poze, login admin)
+  netlify/lib/                – cod comun pentru server
+  package.json, netlify.toml  – setări Netlify
+
+Variabile secrete (Netlify → Site configuration → Environment variables):
+  TELEGRAM_BOT_TOKEN = tokenul de la @BotFather
+  TELEGRAM_CHAT_ID   = ID-ul tău (sau al grupului) unde vin comenzile
+  ADMIN_PASSWORD     = parola panoului de administrare (minim 8 caractere, ideal 12+)
+
+Produsele, prețurile, mărimile și pozele se salvează în Netlify Blobs (baza de date a site-ului).
+La fiecare salvare se păstrează automat o copie de siguranță a listei anterioare.
+Parolele și tokenul NU se scriu niciodată în fișiere.

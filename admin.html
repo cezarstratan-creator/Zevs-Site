@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>ZEVS · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Epilogue:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#ffffff; --fg:#111111; --soft:#f3f2ef; --line:#e4e3df; --muted:#6b6b68; --ok:#1f6f3f; --bad:#b3261e; --warn:#8a5a00;
+  --serif:"Cormorant Garamond", Georgia, serif;
+  --sans:"Epilogue", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --pad:20px; color-scheme:light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit}
+.logo{font:700 26px/1 var(--serif);letter-spacing:.2em;padding-left:.2em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 20px;border-radius:8px;background:#111;color:#fff;font:700 13.5px/1 var(--sans);text-transform:uppercase;letter-spacing:.02em;transition:background .2s,opacity .2s}
+.btn:hover{background:#2a2a2a}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.ghost{background:#fff;color:#111;border:1px solid #d6d5d1}
+.btn.ghost:hover{background:var(--soft)}
+.btn.danger{background:#fff;color:var(--bad);border:1px solid #e8c5c1}
+.btn.sm{height:36px;padding:0 14px;font-size:12px}
+.field{display:block;margin-bottom:16px}
+.field>span{display:block;font-size:13px;color:#555;margin-bottom:7px}
+.inp{width:100%;height:46px;border:1px solid #e3e2de;border-radius:8px;background:var(--soft);padding:0 14px;font-size:16px;outline:none;transition:border-color .2s,background .2s}
+.inp:focus{border-color:#111;background:#fff}
+textarea.inp{height:96px;padding:12px 14px;resize:vertical}
+select.inp{appearance:none;-webkit-appearance:none;background:var(--soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") right 14px center/12px no-repeat}
+.err{color:var(--bad);font-size:13px;min-height:1.2em;margin-top:8px}
+
+/* login */
+.login{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:24px var(--pad)}
+.lbox{width:min(380px,100%);text-align:center}
+.lbox h1{margin:22px 0 6px;font:700 28px/1.1 var(--serif);text-transform:uppercase;letter-spacing:.01em}
+.lbox p{margin:0 0 26px;color:var(--muted);font-size:14px}
+.lbox .btn{width:100%;margin-top:4px}
+.lbox .field{text-align:left}
+
+/* app */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;height:62px;padding:0 var(--pad)}
+.top .logo{font-size:22px}
+.top .tag{font:600 10.5px/1 var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-left:2px}
+.top .sp{flex:1}
+.top a,.top button.lnk{font-size:13px;color:#444;text-decoration:underline;text-underline-offset:3px}
+main{max-width:980px;margin:0 auto;padding:26px var(--pad) 130px}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:18px}
+.head h1{margin:0;font:700 32px/1 var(--serif);text-transform:uppercase;letter-spacing:.01em}
+.head small{display:block;margin-top:8px;color:var(--muted);font-size:13px}
+.tools{display:flex;gap:10px;margin-bottom:16px}
+.tools .inp{flex:1;min-width:0}
+.list{display:grid;gap:10px}
+.row{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 12px 10px 10px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.row:hover{border-color:#cfcecb;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.row img{width:64px;height:78px;object-fit:contain;background:var(--soft);border-radius:8px}
+.row b{display:block;font:600 15px/1.25 var(--sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .meta{font-size:13px;color:var(--muted);margin-top:3px}
+.row .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chip{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:10px;font:600 10.5px/1 var(--sans);letter-spacing:.02em;background:var(--soft);color:#444}
+.chip.home{background:#111;color:#fff}
+.chip.off{background:#fbeeed;color:var(--bad)}
+.chip.new{background:#eaf4ee;color:var(--ok)}
+.ord{display:flex;flex-direction:column;gap:4px}
+.ord button{width:34px;height:30px;border:1px solid var(--line);border-radius:7px;display:grid;place-items:center;background:#fff}
+.ord button:disabled{opacity:.3}
+.ord svg{width:14px;height:14px}
+.empty{padding:40px 0;text-align:center;color:var(--muted)}
+.note{background:var(--soft);border-radius:10px;padding:14px 16px;font-size:13px;color:#555;margin-bottom:18px;line-height:1.5}
+.note b{color:#111}
+
+/* save bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);padding:12px var(--pad) calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .35s cubic-bezier(.22,.61,.36,1)}
+.bar.on{transform:none}
+.bar-in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.bar span{flex:1;font-size:13.5px;color:var(--warn);font-weight:600}
+.bar .btn{min-width:170px}
+
+/* editor */
+.ed{position:fixed;inset:0;z-index:50;background:rgba(17,17,17,.45);display:flex;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .3s}
+.ed.on{opacity:1;pointer-events:auto}
+.panel{width:min(560px,100%);height:100%;background:#fff;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .4s cubic-bezier(.22,.61,.36,1)}
+.ed.on .panel{transform:none}
+.ph{display:flex;align-items:center;justify-content:space-between;height:62px;padding:0 var(--pad);border-bottom:1px solid var(--line);flex:none}
+.ph h2{margin:0;font:700 22px/1 var(--serif);text-transform:uppercase}
+.ph button{width:40px;height:40px;display:grid;place-items:center}
+.pb{flex:1;overflow-y:auto;padding:22px var(--pad) 30px;-webkit-overflow-scrolling:touch}
+.pf{flex:none;display:flex;gap:10px;padding:12px var(--pad) calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.pf .btn:last-child{flex:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sec{margin:8px 0 22px}
+.sec h3{margin:0 0 10px;font:600 14px var(--sans)}
+.sec p.hint{margin:-4px 0 10px;font-size:12.5px;color:var(--muted)}
+.sizes{display:flex;flex-wrap:wrap;gap:8px}
+.sz{display:inline-flex;align-items:center;height:38px;border:1px solid #cfcecb;border-radius:8px;overflow:hidden;background:#fff}
+.sz button.t{height:100%;padding:0 12px;font:700 13px var(--sans)}
+.sz.out button.t{color:#b5b4b0;text-decoration:line-through}
+.sz button.x{width:30px;height:100%;border-left:1px solid #e4e3df;color:#888;font-size:16px}
+.addsz{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.addsz .inp{height:38px;width:110px;font-size:14px;flex:none}
+.addsz .btn{height:38px}
+.imgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.im{position:relative;aspect-ratio:4/5;background:var(--soft);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.im img{width:100%;height:100%;object-fit:contain}
+.im .bt{position:absolute;left:6px;right:6px;bottom:6px;display:flex;justify-content:space-between}
+.im .bt button{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.95);box-shadow:0 1px 4px rgba(0,0,0,.15);display:grid;place-items:center;font-size:14px}
+.im .main{position:absolute;top:6px;left:6px;background:#111;color:#fff;font:600 9.5px/1 var(--sans);padding:4px 6px;border-radius:5px;letter-spacing:.04em}
+.im.up{display:grid;place-items:center;color:var(--muted);font-size:12px}
+.addimg{aspect-ratio:4/5;border:1.5px dashed #cfcecb;border-radius:10px;display:grid;place-items:center;text-align:center;color:#555;font-size:12.5px;background:#fff;cursor:pointer}
+.addimg svg{width:24px;height:24px;display:block;margin:0 auto 6px}
+.tog{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid var(--line);font-size:14px}
+.tog small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.sw{flex:none;width:46px;height:28px;border-radius:14px;background:#d0cfcb;position:relative;transition:background .25s}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .25s}
+.sw.on{background:#111}.sw.on::after{transform:translateX(18px)}
+.confirm{background:#fbeeed;border-radius:10px;padding:14px;margin-top:10px;font-size:13.5px}
+.confirm div{display:flex;gap:8px;margin-top:10px}
+
+.toast{position:fixed;left:50%;top:calc(74px + env(safe-area-inset-top,0px));transform:translate(-50%,-10px);background:#111;color:#fff;padding:11px 16px;border-radius:9px;font-size:13.5px;opacity:0;transition:opacity .3s,transform .3s;z-index:90;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.bad{background:var(--bad)}
+.spin{width:18px;height:18px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite}
+.btn.ghost .spin{border-color:#ddd;border-top-color:#111}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (max-width:520px){
+  .row{grid-template-columns:56px minmax(0,1fr) auto;gap:12px}
+  .row img{width:56px;height:68px}
+  .head h1{font-size:28px}
+  .bar .btn{min-width:0;flex:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section class="login" id="login">
+  <form class="lbox" id="loginF" autocomplete="on">
+    <div class="logo">ZEVS</div>
+    <h1>Panou de administrare</h1>
+    <p>Intră cu parola de administrator.</p>
+    <input type="text" name="username" value="admin" autocomplete="username" hidden>
+    <label class="field"><span>Parolă</span><input class="inp" id="pw" type="password" autocomplete="current-password" required></label>
+    <button class="btn" id="loginBtn" type="submit">Intră</button>
+    <div class="err" id="loginErr"></div>
+  </form>
+</section>
+
+<!-- APP -->
+<div id="app" hidden>
+  <header class="top"><div class="top-in">
+    <span class="logo">ZEVS</span><span class="tag">Admin</span><span class="sp"></span>
+    <a href="/" target="_blank" rel="noopener">Vezi site-ul ↗</a>
+    <button class="lnk" id="logout" type="button">Ieși</button>
+  </div></header>
+  <main>
+    <div class="head">
+      <div><h1>Produse</h1><small id="sub">Se încarcă…</small></div>
+      <button class="btn" id="addBtn" type="button">+ Produs nou</button>
+    </div>
+    <div class="note" id="defNote" hidden>Acestea sunt produsele actuale ale site-ului. După prima salvare, site-ul va folosi lista de aici. <b>Primele 4 produse marcate „Noutăți”</b> apar pe pagina principală, în ordinea din listă.</div>
+    <div class="tools"><input class="inp" id="q" placeholder="Caută produs…" aria-label="Caută produs"></div>
+    <div class="list" id="list"></div>
+  </main>
+  <div class="bar" id="bar"><div class="bar-in"><span id="barTxt">Modificări nesalvate</span><button class="btn ghost sm" id="undo" type="button">Anulează</button><button class="btn" id="save" type="button">Salvează</button></div></div>
+</div>
+
+<!-- EDITOR -->
+<div class="ed" id="ed" aria-hidden="true">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="edT">
+    <div class="ph"><h2 id="edT">Produs</h2><button type="button" id="edX" aria-label="Închide"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+    <div class="pb" id="edB"></div>
+    <div class="pf"><button class="btn ghost" type="button" id="edDel">Șterge</button><button class="btn" type="button" id="edOk">Gata</button></div>
+  </div>
+</div>
+<input type="file" id="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const mdl=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' MDL';
+const ss={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}},del(k){try{sessionStorage.removeItem(k)}catch(e){}}};
+let token=ss.get('zevs-admin');
+let products=[], saved='[]', CATS=[], source='default', editing=-1, confirmDel=false;
+const CLOTH=['S','M','L','XL'], SHOES=['36','37','38','39','40','41','42','43','44','45'];
+
+function toast(m,bad){const t=$('#toast'); t.textContent=m; t.classList.toggle('bad',!!bad); t.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('on'),2800);}
+async function api(path,opt={}){
+  const r=await fetch(path,{...opt,headers:{...(opt.headers||{}),...(token?{authorization:'Bearer '+token}:{})}});
+  let j={}; try{j=await r.json()}catch(e){}
+  if(r.status===401&&path!=='/api/admin/login'){ logout(true); throw new Error(j.error||'Sesiune expirată.'); }
+  if(!r.ok||j.ok===false) throw new Error(j.error||'Eroare server ('+r.status+').');
+  return j;
+}
+
+/* ---------- login ---------- */
+$('#loginF').addEventListener('submit',async e=>{
+  e.preventDefault(); const b=$('#loginBtn'); b.disabled=true; b.innerHTML='<span class="spin"></span>'; $('#loginErr').textContent='';
+  try{ const j=await api('/api/admin/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({password:$('#pw').value})});
+    token=j.token; ss.set('zevs-admin',token); $('#pw').value=''; start(); }
+  catch(err){ $('#loginErr').textContent=err.message; }
+  finally{ b.disabled=false; b.textContent='Intră'; }
+});
+function logout(expired){ token=null; ss.del('zevs-admin'); $('#app').hidden=true; $('#login').hidden=false; closeEd(); if(expired) $('#loginErr').textContent='Sesiunea a expirat. Intră din nou.'; }
+$('#logout').onclick=()=>{ if(dirty()&&!window.__confirmLeave){ window.__confirmLeave=true; toast('Ai modificări nesalvate. Apasă din nou „Ieși” ca să ieși fără să salvezi.',true); setTimeout(()=>window.__confirmLeave=false,4000); return; } logout(false); };
+
+async function start(){
+  $('#login').hidden=true; $('#app').hidden=false; $('#sub').textContent='Se încarcă…';
+  try{ const j=await api('/api/admin/products'); products=j.products; CATS=j.cats; source=j.source; saved=JSON.stringify(products);
+    $('#defNote').hidden=source!=='default'; renderList(); }
+  catch(err){ $('#sub').textContent=err.message; }
+}
+
+/* ---------- list ---------- */
+const dirty=()=>JSON.stringify(products)!==saved || source==='default'&&false;
+function updBar(){ const d=dirty(); $('#bar').classList.toggle('on',d); }
+function renderList(){
+  const q=$('#q').value.trim().toLowerCase();
+  const homeIds=products.filter(p=>p.home&&p.active!==false).slice(0,4).map(p=>p.id);
+  $('#sub').textContent=`${products.length} ${products.length===1?'produs':'produse'} · ${products.filter(p=>p.active!==false).length} vizibile pe site`;
+  const rows=products.map((p,i)=>({p,i})).filter(({p})=>!q||(p.name+' '+p.cat).toLowerCase().includes(q));
+  $('#list').innerHTML=rows.length?rows.map(({p,i})=>`
+    <div class="row" data-i="${i}">
+      <img src="${esc(p.imgs[0]||'')}" alt="" loading="lazy">
+      <div style="min-width:0"><b>${esc(p.name)}</b><div class="meta">${mdl(p.price)} · ${esc(p.cat)} · ${p.sizes.map(s=>s[1]?esc(s[0]):'<s>'+esc(s[0])+'</s>').join(' ')}</div>
+        <div class="chips">${homeIds.includes(p.id)?'<span class="chip home">Noutăți</span>':(p.home?'<span class="chip">Noutăți (nu încape)</span>':'')}${p.active===false?'<span class="chip off">Ascuns</span>':''}${p.__new?'<span class="chip new">Nou, nesalvat</span>':''}</div></div>
+      <div class="ord"><button type="button" data-up="${i}" aria-label="Mută mai sus" ${i===0?'disabled':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg></button><button type="button" data-dn="${i}" aria-label="Mută mai jos" ${i===products.length-1?'disabled':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div>
+    </div>`).join(''):'<div class="empty">Niciun produs găsit.</div>';
+  updBar();
+}
+$('#q').addEventListener('input',renderList);
+$('#list').addEventListener('click',e=>{
+  const up=e.target.closest('[data-up]'), dn=e.target.closest('[data-dn]');
+  if(up){ const i=+up.dataset.up; [products[i-1],products[i]]=[products[i],products[i-1]]; renderList(); return; }
+  if(dn){ const i=+dn.dataset.dn; [products[i+1],products[i]]=[products[i],products[i+1]]; renderList(); return; }
+  const row=e.target.closest('.row'); if(row) openEd(+row.dataset.i);
+});
+$('#addBtn').onclick=()=>{ products.unshift({id:'',name:'',price:0,cat:CATS[0]||'Shirts',sizes:CLOTH.map(s=>[s,1]),imgs:[],home:true,active:true,desc:'',__new:true}); renderList(); openEd(0); };
+
+/* ---------- editor ---------- */
+function openEd(i){ editing=i; confirmDel=false; drawEd(); $('#ed').classList.add('on'); $('#ed').setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; setTimeout(()=>{ const n=$('#e-name'); if(n&&!n.value) n.focus(); },350); }
+function closeEd(){ $('#ed').classList.remove('on'); $('#ed').setAttribute('aria-hidden','true'); document.body.style.overflow=''; editing=-1; renderList(); }
+function cur(){ return products[editing]; }
+function drawEd(){
+  const p=cur(); if(!p) return;
+  $('#edT').textContent=p.__new?'Produs nou':'Editează';
+  $('#edB').innerHTML=`
+    <label class="field"><span>Nume produs</span><input class="inp" id="e-name" value="${esc(p.name)}" maxlength="80" placeholder="Ex.: Hanorac oversize"></label>
+    <div class="two">
+      <label class="field"><span>Preț (MDL)</span><input class="inp" id="e-price" type="number" inputmode="numeric" min="1" step="1" value="${p.price||''}" placeholder="1499"></label>
+      <label class="field"><span>Categorie</span><select class="inp" id="e-cat">${CATS.map(c=>`<option${c===p.cat?' selected':''}>${esc(c)}</option>`).join('')}</select></label>
+    </div>
+    <div class="sec"><h3>Poze</h3><p class="hint">Prima poză apare pe card. Folosește săgețile ca să schimbi ordinea.</p>
+      <div class="imgs" id="e-imgs">${p.imgs.map((u,k)=>`<div class="im">${k===0?'<span class="main">PRINCIPALĂ</span>':''}<img src="${esc(u)}" alt=""><div class="bt"><button type="button" data-il="${k}" aria-label="Mută la stânga" ${k===0?'style="visibility:hidden"':''}>‹</button><button type="button" data-ix="${k}" aria-label="Șterge poza">×</button><button type="button" data-ir="${k}" aria-label="Mută la dreapta" ${k===p.imgs.length-1?'style="visibility:hidden"':''}>›</button></div></div>`).join('')}
+        <div class="im up" id="e-up" hidden><span class="spin" style="border-color:#ddd;border-top-color:#111"></span></div>
+        ${p.imgs.length<10?`<button type="button" class="addimg" id="e-add"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Adaugă poze</span></button>`:''}
+      </div></div>
+    <div class="sec"><h3>Mărimi</h3><p class="hint">Atinge o mărime ca s-o marchezi „epuizată” (tăiată) sau din nou în stoc.</p>
+      <div class="sizes" id="e-sizes">${p.sizes.map((s,k)=>`<span class="sz${s[1]?'':' out'}"><button type="button" class="t" data-st="${k}">${esc(s[0])}</button><button type="button" class="x" data-sx="${k}" aria-label="Șterge mărimea">×</button></span>`).join('')||'<span style="color:#888;font-size:13px">Nicio mărime.</span>'}</div>
+      <div class="addsz"><input class="inp" id="e-sz" placeholder="Ex.: XXL" maxlength="8"><button class="btn ghost sm" type="button" id="e-szadd">Adaugă</button><button class="btn ghost sm" type="button" data-preset="cloth">S–XL</button><button class="btn ghost sm" type="button" data-preset="shoes">36–45</button></div></div>
+    <label class="field"><span>Descriere (opțional)</span><textarea class="inp" id="e-desc" maxlength="600" placeholder="Apare înaintea textului standard din „Descriere”.">${esc(p.desc||'')}</textarea></label>
+    <div class="tog"><div>Afișează la „Noutăți”<small>Primele 4 marcate apar pe pagina principală.</small></div><button type="button" class="sw${p.home?' on':''}" id="e-home" aria-pressed="${!!p.home}" aria-label="Afișează la Noutăți"></button></div>
+    <div class="tog"><div>Vizibil pe site<small>Dezactivează ca să ascunzi produsul fără să-l ștergi.</small></div><button type="button" class="sw${p.active!==false?' on':''}" id="e-act" aria-pressed="${p.active!==false}" aria-label="Vizibil pe site"></button></div>
+    <div class="err" id="e-err"></div>
+    ${confirmDel?`<div class="confirm">Sigur ștergi „${esc(p.name||'produsul')}”? Se aplică după ce apeși „Salvează”.<div><button class="btn danger sm" type="button" id="e-delyes">Da, șterge</button><button class="btn ghost sm" type="button" id="e-delno">Nu</button></div></div>`:''}`;
+}
+const edB=$('#edB');
+edB.addEventListener('input',e=>{ const p=cur(); if(!p) return;
+  if(e.target.id==='e-name') p.name=e.target.value;
+  if(e.target.id==='e-price') p.price=Math.max(0,Math.round(+e.target.value||0));
+  if(e.target.id==='e-desc') p.desc=e.target.value;
+  if(e.target.id==='e-cat') p.cat=e.target.value; updBar(); });
+edB.addEventListener('change',e=>{ if(e.target.id==='e-cat'){ cur().cat=e.target.value; updBar(); } });
+edB.addEventListener('keydown',e=>{ if(e.target.id==='e-sz'&&e.key==='Enter'){ e.preventDefault(); addSize(); } });
+function addSize(){ const p=cur(), v=$('#e-sz').value.trim().toUpperCase().slice(0,8); if(!v) return; if(!p.sizes.some(s=>s[0]===v)) p.sizes.push([v,1]); drawEd(); updBar(); $('#e-sz').focus(); }
+edB.addEventListener('click',e=>{
+  const p=cur(); if(!p) return; const t=e.target.closest('button'); if(!t) return;
+  if(t.dataset.st!=null){ const s=p.sizes[+t.dataset.st]; s[1]=s[1]?0:1; }
+  else if(t.dataset.sx!=null){ p.sizes.splice(+t.dataset.sx,1); }
+  else if(t.id==='e-szadd'){ return addSize(); }
+  else if(t.dataset.preset){ const list=t.dataset.preset==='cloth'?CLOTH:SHOES; p.sizes=list.map(s=>[s,1]); }
+  else if(t.dataset.il!=null){ const k=+t.dataset.il; [p.imgs[k-1],p.imgs[k]]=[p.imgs[k],p.imgs[k-1]]; }
+  else if(t.dataset.ir!=null){ const k=+t.dataset.ir; [p.imgs[k+1],p.imgs[k]]=[p.imgs[k],p.imgs[k+1]]; }
+  else if(t.dataset.ix!=null){ p.imgs.splice(+t.dataset.ix,1); }
+  else if(t.id==='e-add'){ $('#file').value=''; $('#file').click(); return; }
+  else if(t.id==='e-home'){ p.home=!p.home; }
+  else if(t.id==='e-act'){ p.active=p.active===false; }
+  else if(t.id==='e-delyes'){ products.splice(editing,1); closeEd(); toast('Produs șters. Apasă „Salvează” ca să se aplice.'); return; }
+  else if(t.id==='e-delno'){ confirmDel=false; }
+  else return;
+  drawEd(); updBar();
+});
+$('#edX').onclick=()=>finishEd();
+$('#edOk').onclick=()=>finishEd();
+$('#edDel').onclick=()=>{ if(cur()?.__new&&!cur().name&&!cur().imgs.length){ products.splice(editing,1); closeEd(); return; } confirmDel=true; drawEd(); $('#edB').scrollTop=1e6; };
+$('#ed').addEventListener('click',e=>{ if(e.target.id==='ed') finishEd(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&editing>=0) finishEd(); });
+function problem(p){
+  if(!p.name.trim()) return 'Scrie numele produsului.';
+  if(!(p.price>0)) return 'Scrie prețul în MDL.';
+  if(!p.imgs.length) return 'Adaugă cel puțin o poză.';
+  if(!p.sizes.length) return 'Adaugă cel puțin o mărime.';
+  return '';
+}
+function finishEd(){
+  const p=cur(); if(!p) return closeEd();
+  if(p.__new&&!p.name.trim()&&!p.imgs.length){ products.splice(editing,1); return closeEd(); }
+  const m=problem(p); if(m){ $('#e-err').textContent=m; return; }
+  closeEd();
+}
+
+/* ---------- upload: micșorează poza în browser, apoi o urcă ---------- */
+$('#file').addEventListener('change',async()=>{
+  const files=[...$('#file').files].slice(0,10); if(!files.length||editing<0) return;
+  const p=cur();
+  for(const f of files){
+    if(p.imgs.length>=10) break;
+    $('#e-up')&&($('#e-up').hidden=false);
+    try{ const blob=await shrink(f); const r=await fetch('/api/admin/upload',{method:'POST',headers:{'content-type':blob.type,authorization:'Bearer '+token},body:blob});
+      const j=await r.json().catch(()=>({}));
+      if(r.status===401){ logout(true); return; }
+      if(!r.ok||!j.ok) throw new Error(j.error||'Nu s-a putut urca poza.');
+      p.imgs.push(j.url); drawEd(); updBar();
+    }catch(err){ toast(err.message||'Nu s-a putut urca poza.',true); drawEd(); }
+  }
+});
+function shrink(file){ return new Promise((res,rej)=>{
+  if(!/^image\//.test(file.type)) return rej(new Error('Alege o imagine (JPG, PNG, WEBP).'));
+  const url=URL.createObjectURL(file), img=new Image();
+  img.onload=()=>{ const M=1400, k=Math.min(1,M/Math.max(img.width,img.height)); const c=document.createElement('canvas');
+    c.width=Math.round(img.width*k); c.height=Math.round(img.height*k); const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url);
+    c.toBlob(b=>{ if(b&&b.type==='image/webp') return res(b); c.toBlob(j=>j?res(j):rej(new Error('Nu s-a putut procesa poza.')),'image/jpeg',.86); },'image/webp',.86); };
+  img.onerror=()=>{ URL.revokeObjectURL(url); rej(new Error('Poza nu poate fi citită. Încearcă JPG sau PNG.')); };
+  img.src=url; }); }
+
+/* ---------- save ---------- */
+$('#save').onclick=async()=>{
+  const bad=products.findIndex(p=>problem(p)); if(bad>=0){ openEd(bad); setTimeout(()=>{$('#e-err').textContent=problem(products[bad]);},50); return; }
+  const b=$('#save'); b.disabled=true; b.innerHTML='<span class="spin"></span>';
+  try{ const clean=products.map(({__new,...p})=>p);
+    const j=await api('/api/admin/products',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({products:clean})});
+    products=j.products; saved=JSON.stringify(products); source='store'; $('#defNote').hidden=true; renderList(); toast('Salvat. Site-ul este actualizat.'); }
+  catch(err){ toast(err.message,true); }
+  finally{ b.disabled=false; b.textContent='Salvează'; }
+};
+$('#undo').onclick=()=>{ products=JSON.parse(saved); renderList(); toast('Modificările au fost anulate.'); };
+addEventListener('beforeunload',e=>{ if(dirty()){ e.preventDefault(); e.returnValue=''; } });
+
+if(token) start();
+</script>
+</body>
+</html>
