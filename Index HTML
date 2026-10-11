@@ -5,7 +5,7 @@ Conținut:
   netlify/functions/order.mjs    – primește comenzile, le numerotează (ZV-1, ZV-2…) și le trimite pe Telegram
   package.json, netlify.toml     – setări pentru Netlify
 
-Variabile secrete (Netlify → Site configuration → Environment variables):
+Variabile secrete (Netlify → Site configuration → Environment variables): 
   TELEGRAM_BOT_TOKEN = tokenul de la @BotFather
   TELEGRAM_CHAT_ID   = ID-ul tău (sau al grupului) unde vin comenzile
 
